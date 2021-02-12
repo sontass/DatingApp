@@ -20,5 +20,10 @@ export class MembersService {
   getMember(username: string): Observable<Member> {
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
+
+  updateMember(member: Member) {
+    //https://localhost:5001/api/Users
+    return this.http.put(this.baseUrl + 'Users' , member);
+  }
 }
 

@@ -3,10 +3,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Data.Migrations
 {
-    public partial class ExtendedUserEntity : Migration
+    public partial class initCreated : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.RenameColumn(
+                name: "UserName",
+                table: "Users",
+                newName: "Username");
+
             migrationBuilder.AddColumn<string>(
                 name: "City",
                 table: "Users",
@@ -68,6 +73,18 @@ namespace API.Data.Migrations
                 name: "LookingFor",
                 table: "Users",
                 type: "TEXT",
+                nullable: true);
+
+            migrationBuilder.AddColumn<byte[]>(
+                name: "PasswordHash",
+                table: "Users",
+                type: "BLOB",
+                nullable: true);
+
+            migrationBuilder.AddColumn<byte[]>(
+                name: "PasswordSalt",
+                table: "Users",
+                type: "BLOB",
                 nullable: true);
 
             migrationBuilder.CreateTable(
@@ -142,6 +159,19 @@ namespace API.Data.Migrations
             migrationBuilder.DropColumn(
                 name: "LookingFor",
                 table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "PasswordHash",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "PasswordSalt",
+                table: "Users");
+
+            migrationBuilder.RenameColumn(
+                name: "Username",
+                table: "Users",
+                newName: "UserName");
         }
     }
 }

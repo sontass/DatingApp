@@ -1,11 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using API.Controllers;
 using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace API
+namespace API.Controllers
 {
     public class BuggyController : BaseApiController
     {
@@ -41,6 +47,26 @@ namespace API
         [HttpGet("bad-request")]
         public ActionResult<AppUser> GetBadRequest() {
             return BadRequest("Thia was not a good request");
-        }
+        }    
+
+          [HttpGet("GetScript")]
+        public  async Task<ActionResult<AppUser>>  GetScript() {
+            var userData = await System.IO.File.ReadAllTextAsync("Data/UserSeedData.json");
+            var users = JsonSerializer.Deserialize<List<AppUser>>(userData);            
+
+            foreach(var user in users) {
+                using var hmac = new HMACSHA512();
+                user.UserName = user.UserName.ToLower();
+                user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("sin442"));
+                user.PasswordSalt = hmac.Key;
+
+                _context.Users.Add(user);
+            }
+            
+            await _context.SaveChangesAsync();
+            
+             return Ok("Thia was not a good request");
+        }   
+         
     }
 }
