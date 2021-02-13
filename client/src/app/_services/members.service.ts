@@ -25,5 +25,15 @@ export class MembersService {
     //https://localhost:5001/api/Users
     return this.http.put(this.baseUrl + 'Users' , member);
   }
+
+  setMainPhoto(photoId: number) {
+    return this.http.put(this.baseUrl + 'Users/set-main-photo/' + photoId , {} )
+  }
+
+  deletePhoto(photoId: number) {
+   return this.http.delete(this.baseUrl + 'Users/delete-photo/'+ photoId) ;
+  }
+
+
 }
 

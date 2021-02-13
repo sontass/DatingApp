@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using API.Extensions;
 using API.Middleware;
+using API.Helpers;
 
 namespace API
 {
@@ -48,6 +49,8 @@ namespace API
                         new List<string>()
                     }
                 });
+                c.OperationFilter<SwaggerUploadFileFilter>();
+                
 
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
